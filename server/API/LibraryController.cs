@@ -13,9 +13,9 @@ public class LibraryController(LibraryService service) : ControllerBase
     }
 
     [HttpPost(nameof(CreateBook))]
-    public void CreateBook(string title)
+    public void CreateBook(string title, string authorId)
     {
-        service.CreateBook(title);
+        service.CreateBook(title, authorId);
     }
 
     [HttpPut(nameof(UpdateBook))]
