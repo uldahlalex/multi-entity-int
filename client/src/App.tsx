@@ -24,7 +24,13 @@ export function App() {
 
         {
             books.map(b => {
-                return <div>Book title: {b.bookTitle}</div>
+                return <div>Book title: {b.bookTitle}<button onClick={() => {
+                    MyBackendAlwaysUseThisOneVeryImportant.deleteBook.libraryDeleteBook({bookId: b.bookId}).then(r => {
+                        MyBackendAlwaysUseThisOneVeryImportant.getBooks.libraryGetBooks().then(r => {
+                            setBooks(r)
+                        })
+                    })
+                }}>click to delete this book</button></div>
             })
         }
         <input placeholder={"make title new a new book"} onChange={e => setNewTitle(e.target.value)} value={newTitle}  />

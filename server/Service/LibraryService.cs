@@ -1,3 +1,4 @@
+using System.ComponentModel.DataAnnotations;
 using Infra;
 using LinqToDB;
 
@@ -15,5 +16,13 @@ public class LibraryService(MyDatabaseConnection dbConnection)
             BookId = Guid.NewGuid().ToString(),
             BookTitle = title
         });
+    }
+
+    public void DeleteBook(string bookId)
+    {
+        var book = dbConnection.Books
+                       .FirstOrDefault(b => b.BookId == bookId) ??
+                   throw new ValidationException("Book not found!");
+        dbConnection.Delete(book);
     }
 }

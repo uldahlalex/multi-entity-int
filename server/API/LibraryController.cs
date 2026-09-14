@@ -25,8 +25,8 @@ public class LibraryController(LibraryService service) : ControllerBase
     }
 
     [HttpDelete(nameof(DeleteBook))]
-    public void DeleteBook()
+    public void DeleteBook(string bookId)
     {
-        throw new NotImplementedException();
+        service.DeleteBook(bookId);
     }
 }

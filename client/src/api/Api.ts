@@ -19,6 +19,10 @@ export interface LibraryCreateBookParams {
   title?: string;
 }
 
+export interface LibraryDeleteBookParams {
+  bookId?: string;
+}
+
 export type QueryParamsType = Record<string | number, any>;
 export type ResponseFormat = keyof Omit<Body, "body" | "bodyUsed">;
 
@@ -340,10 +344,14 @@ export class Api<
      * @name LibraryDeleteBook
      * @request DELETE:/DeleteBook
      */
-    libraryDeleteBook: (params: RequestParams = {}) =>
+    libraryDeleteBook: (
+      query: LibraryDeleteBookParams = {},
+      params: RequestParams = {},
+    ) =>
       this.request<void, any>({
         path: `/DeleteBook`,
         method: "DELETE",
+        query: query,
         ...params,
       }),
   };
