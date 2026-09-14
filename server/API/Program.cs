@@ -11,8 +11,11 @@ builder.Services.AddScoped<MyDatabaseConnection>(_ => new MyDatabaseConnection(d
 builder.Services.AddControllers();
 builder.Services.AddOpenApiDocument();
 builder.Services.AddScoped<LibraryService>();
+builder.Services.AddCors();
 
 var app = builder.Build();
+
+app.UseCors(config => config.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin().SetIsOriginAllowed(_ => true));
 
 using (var scope = app.Services.CreateScope())
 {

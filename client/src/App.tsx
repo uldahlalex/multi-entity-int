@@ -3,20 +3,30 @@ import "./index.css";
 
 import logo from "./logo.svg";
 import reactLogo from "./react.svg";
+import {useEffect, useState} from "react";
+import {Api, type Book} from "@/api/Api.ts";
+
+export const MyBackendAlwaysUseThisOneVeryImportant = new Api();
 
 export function App() {
+
+    const [books, setBooks] = useState<Book[]>([])
+
+    useEffect(() => {
+        MyBackendAlwaysUseThisOneVeryImportant.getBooks.libraryGetBooks().then(r => {
+            setBooks(r)
+        })
+    }, []);
+
   return (
     <div className="app">
-      <div className="logo-container">
-        <img src={logo} alt="Bun Logo" className="logo bun-logo" />
-        <img src={reactLogo} alt="React Logo" className="logo react-logo" />
-      </div>
 
-      <h1>Bun + React</h1>
-      <p>
-        Edit <code>src/App.tsx</code> and save to test HMR
-      </p>
-      <APITester />
+        {
+            books.map(b => {
+                return <div>Book title: {b.bookTitle}</div>
+            })
+        }
+
     </div>
   );
 }
