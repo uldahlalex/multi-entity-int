@@ -13,9 +13,9 @@ public class LibraryController(LibraryService service) : ControllerBase
     }
 
     [HttpPost(nameof(CreateBook))]
-    public void CreateBook()
+    public void CreateBook(string title)
     {
-        throw new NotImplementedException();
+        service.CreateBook(title);
     }
 
     [HttpPut(nameof(UpdateBook))]

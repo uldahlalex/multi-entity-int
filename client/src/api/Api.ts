@@ -15,6 +15,10 @@ export interface Book {
   bookTitle?: string;
 }
 
+export interface LibraryCreateBookParams {
+  title?: string;
+}
+
 export type QueryParamsType = Record<string | number, any>;
 export type ResponseFormat = keyof Omit<Body, "body" | "bodyUsed">;
 
@@ -302,10 +306,14 @@ export class Api<
      * @name LibraryCreateBook
      * @request POST:/CreateBook
      */
-    libraryCreateBook: (params: RequestParams = {}) =>
+    libraryCreateBook: (
+      query: LibraryCreateBookParams = {},
+      params: RequestParams = {},
+    ) =>
       this.request<void, any>({
         path: `/CreateBook`,
         method: "POST",
+        query: query,
         ...params,
       }),
   };
