@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using API;
 using Infra;
 using LinqToDB;
 
@@ -24,5 +25,16 @@ public class LibraryService(MyDatabaseConnection dbConnection)
                        .FirstOrDefault(b => b.BookId == bookId) ??
                    throw new ValidationException("Book not found!");
         dbConnection.Delete(book);
+    }
+
+    public void UpdateBook(UpdateBookRequestDto dto)
+    {
+        var book = dbConnection.Books
+                       .FirstOrDefault(b => b.BookId == dto.BookIdForLookup) ??
+                   throw new ValidationException("Book not found!");
+        if(dto.NewBookTitle!=null)
+            book.BookTitle = dto.NewBookTitle;
+
+        dbConnection.Update(book);
     }
 }

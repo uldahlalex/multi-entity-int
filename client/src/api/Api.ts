@@ -19,6 +19,11 @@ export interface LibraryCreateBookParams {
   title?: string;
 }
 
+export interface LibraryUpdateBookParams {
+  BookIdForLookup?: string;
+  NewBookTitle?: string | null;
+}
+
 export interface LibraryDeleteBookParams {
   bookId?: string;
 }
@@ -329,10 +334,14 @@ export class Api<
      * @name LibraryUpdateBook
      * @request PUT:/UpdateBook
      */
-    libraryUpdateBook: (params: RequestParams = {}) =>
+    libraryUpdateBook: (
+      query: LibraryUpdateBookParams = {},
+      params: RequestParams = {},
+    ) =>
       this.request<void, any>({
         path: `/UpdateBook`,
         method: "PUT",
+        query: query,
         ...params,
       }),
   };

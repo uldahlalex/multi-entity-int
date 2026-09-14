@@ -19,9 +19,9 @@ public class LibraryController(LibraryService service) : ControllerBase
     }
 
     [HttpPut(nameof(UpdateBook))]
-    public void UpdateBook()
+    public void UpdateBook(UpdateBookRequestDto dto)
     {
-        throw new NotImplementedException();
+        service.UpdateBook(dto);
     }
 
     [HttpDelete(nameof(DeleteBook))]

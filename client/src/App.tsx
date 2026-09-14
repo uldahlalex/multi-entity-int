@@ -1,4 +1,4 @@
-import { APITester } from "./APITester";
+import {APITester} from "./APITester";
 import "./index.css";
 
 import logo from "./logo.svg";
@@ -7,6 +7,36 @@ import {useEffect, useState} from "react";
 import {Api, type Book} from "@/api/Api.ts";
 
 export const MyBackendAlwaysUseThisOneVeryImportant = new Api();
+
+interface BookComponentProps {
+    b: Book
+    setBooks: (books: Book[]) => void;
+}
+
+function BookComponent({b, setBooks}: BookComponentProps) {
+
+    const [newBookTitle, setNewBookTitle] = useState(b.bookTitle)
+
+    return <div>Book title: {b.bookTitle}
+        <button onClick={() => {
+            MyBackendAlwaysUseThisOneVeryImportant.deleteBook.libraryDeleteBook({bookId: b.bookId}).then(r => {
+                MyBackendAlwaysUseThisOneVeryImportant.getBooks.libraryGetBooks().then(r => {
+                    setBooks(r)
+                })
+            })
+        }}>click to delete this book
+        </button>
+        <input placeholder={"new title for this book"} value={newBookTitle}
+               onChange={e => setNewBookTitle(e.target.value)} />
+        <button onClick={() => {
+            MyBackendAlwaysUseThisOneVeryImportant.updateBook.libraryUpdateBook({BookIdForLookup: b.bookId, NewBookTitle: newBookTitle}).then(r => {
+                MyBackendAlwaysUseThisOneVeryImportant.getBooks.libraryGetBooks().then(r => {
+                    setBooks(r)
+                })
+            })
+        }}>Update with new title</button>
+    </div>
+}
 
 export function App() {
 
@@ -19,34 +49,30 @@ export function App() {
         })
     }, []);
 
-  return (
-    <div className="app">
+    return (
+        <div className="app">
 
-        {
-            books.map(b => {
-                return <div>Book title: {b.bookTitle}<button onClick={() => {
-                    MyBackendAlwaysUseThisOneVeryImportant.deleteBook.libraryDeleteBook({bookId: b.bookId}).then(r => {
-                        MyBackendAlwaysUseThisOneVeryImportant.getBooks.libraryGetBooks().then(r => {
-                            setBooks(r)
-                        })
-                    })
-                }}>click to delete this book</button></div>
-            })
-        }
-        <input placeholder={"make title new a new book"} onChange={e => setNewTitle(e.target.value)} value={newTitle}  />
-        <button onClick={() => {
-            MyBackendAlwaysUseThisOneVeryImportant.createBook.libraryCreateBook({title: newTitle}).then(r => {
-                MyBackendAlwaysUseThisOneVeryImportant.getBooks.libraryGetBooks().then(r => {
-                    setBooks(r)
+            {
+                books.map(b => {
+                    return <BookComponent b={b} setBooks={(books) => setBooks(books)}/>
                 })
-                //if success (meaning if 200-something status code response from the backend)
-            }).catch(e => {
-                //if failure (meaning if 400 or 500-something status codes get you into this block
-            })
-        }}>Click to create new book</button>
+            }
+            <input placeholder={"make title new a new book"} onChange={e => setNewTitle(e.target.value)}
+                   value={newTitle}/>
+            <button onClick={() => {
+                MyBackendAlwaysUseThisOneVeryImportant.createBook.libraryCreateBook({title: newTitle}).then(r => {
+                    MyBackendAlwaysUseThisOneVeryImportant.getBooks.libraryGetBooks().then(r => {
+                        setBooks(r)
+                    })
+                    //if success (meaning if 200-something status code response from the backend)
+                }).catch(e => {
+                    //if failure (meaning if 400 or 500-something status codes get you into this block
+                })
+            }}>Click to create new book
+            </button>
 
-    </div>
-  );
+        </div>
+    );
 }
 
 export default App;
