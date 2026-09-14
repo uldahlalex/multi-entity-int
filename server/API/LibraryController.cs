@@ -1,14 +1,15 @@
+using Infra;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API;
 
 
-public class LibraryController : ControllerBase
+public class LibraryController(LibraryService service) : ControllerBase
 {
     [HttpGet(nameof(GetBooks))]
-    public List<object> GetBooks()
+    public List<Book> GetBooks()
     {
-        throw new NotImplementedException();
+        return service.GetBooks();
     }
 
     [HttpPost(nameof(CreateBook))]
