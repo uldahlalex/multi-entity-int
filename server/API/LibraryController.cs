@@ -4,12 +4,31 @@ using Microsoft.AspNetCore.Mvc;
 namespace API;
 
 
+/// <summary>
+/// For storing user in database
+/// </summary>
+public class User
+{
+    public string PasswordHash { get; set; }
+    public string Username { get; set; }
+}
+
+/// <summary>
+/// For sending over network
+/// </summary>
+public class UserDto
+{
+    public string Username { get; set; }
+}
+
 public class LibraryController(LibraryService service) : ControllerBase
 {
+
+ 
     [HttpGet(nameof(GetBooks))]
-    public List<Book> GetBooks()
+    public List<AuthorDto> GetBooks()
     {
-        return service.GetBooks();
+        return service.GetAuthors();
     }
 
     [HttpPost(nameof(CreateBook))]
